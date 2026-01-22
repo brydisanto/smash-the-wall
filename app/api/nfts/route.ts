@@ -22,12 +22,11 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export async function GET() {
     try {
         // Step 1: Get all listings from this seller for GVC collection
-        // Using the collection listings endpoint with maker filter
         let allListings: any[] = [];
         let cursor: string | null = null;
 
-        // Paginate through all listings (may need multiple calls)
-        for (let i = 0; i < 5; i++) { // Max 5 pages to prevent infinite loop
+        // Paginate through all listings
+        for (let i = 0; i < 5; i++) {
             const listingsUrl = new URL(`https://api.opensea.io/api/v2/listings/collection/${GVC_COLLECTION}/all`);
             listingsUrl.searchParams.set('limit', '100');
             if (cursor) {
@@ -38,7 +37,8 @@ export async function GET() {
                 headers: {
                     'accept': 'application/json',
                     'x-api-key': OPENSEA_API_KEY
-                }
+                },
+                next: { revalidate: 60 } // Cache for 60 seconds
             });
 
             if (!listingsResponse.ok) {
@@ -63,7 +63,8 @@ export async function GET() {
             cursor = listingsData.next;
             if (!cursor) break;
 
-            await delay(300); // Rate limit protection
+            // Reduced delay for pagination since we cache
+            await delay(100);
         }
 
         if (allListings.length === 0) {
@@ -93,31 +94,38 @@ export async function GET() {
             });
         }
 
-        // Step 3: Fetch actual NFT images from OpenSea
-        const tokenIds = Array.from(nftMap.keys()).slice(0, 100); // Fetch images for up to 100 NFTs
+        // Step 3: Fetch actual NFT images from OpenSea in PARALLEL batches
+        const tokenIds = Array.from(nftMap.keys()).slice(0, 100);
+        const BATCH_SIZE = 5;
 
-        for (const tokenId of tokenIds) {
-            try {
-                await delay(100);
-                const nftUrl = `https://api.opensea.io/api/v2/chain/ethereum/contract/${GVC_CONTRACT}/nfts/${tokenId}`;
-                const nftResponse = await fetch(nftUrl, {
-                    headers: {
-                        'accept': 'application/json',
-                        'x-api-key': OPENSEA_API_KEY
-                    }
-                });
+        for (let i = 0; i < tokenIds.length; i += BATCH_SIZE) {
+            const batch = tokenIds.slice(i, i + BATCH_SIZE);
+            await Promise.all(batch.map(async (tokenId) => {
+                try {
+                    const nftUrl = `https://api.opensea.io/api/v2/chain/ethereum/contract/${GVC_CONTRACT}/nfts/${tokenId}`;
+                    const nftResponse = await fetch(nftUrl, {
+                        headers: {
+                            'accept': 'application/json',
+                            'x-api-key': OPENSEA_API_KEY
+                        },
+                        next: { revalidate: 3600 } // Cache image URLs for 1 hour (they don't change)
+                    });
 
-                if (nftResponse.ok) {
-                    const nftData = await nftResponse.json();
-                    const nft = nftMap.get(tokenId);
-                    if (nft && nftData.nft) {
-                        nft.name = nftData.nft.name || nft.name;
-                        nft.image = nftData.nft.image_url || nftData.nft.display_image_url || nft.image;
+                    if (nftResponse.ok) {
+                        const nftData = await nftResponse.json();
+                        const nft = nftMap.get(tokenId);
+                        if (nft && nftData.nft) {
+                            nft.name = nftData.nft.name || nft.name;
+                            nft.image = nftData.nft.image_url || nftData.nft.display_image_url || nft.image;
+                        }
                     }
+                } catch (e) {
+                    // Continue with default data
                 }
-            } catch (e) {
-                // Continue with default data
-            }
+            }));
+
+            // Small delay between batches to be nice to the API
+            if (i + BATCH_SIZE < tokenIds.length) await delay(100);
         }
 
         const nftsArray = Array.from(nftMap.values())
@@ -133,3 +141,4 @@ export async function GET() {
         return NextResponse.json({ nfts: [], count: 0, error: 'Internal error' }, { status: 500 });
     }
 }
+

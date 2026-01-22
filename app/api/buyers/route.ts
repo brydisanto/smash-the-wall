@@ -24,13 +24,13 @@ async function resolveUsername(address: string): Promise<string | null> {
     }
 
     try {
-        await delay(100);
         const url = `https://api.opensea.io/api/v2/accounts/${address}`;
         const response = await fetch(url, {
             headers: {
                 'accept': 'application/json',
                 'x-api-key': OPENSEA_API_KEY
-            }
+            },
+            next: { revalidate: 3600 } // Cache usernames for 1 hour
         });
 
         if (response.ok) {
@@ -57,8 +57,8 @@ export async function GET() {
         let allSales: any[] = [];
         let cursor: string | null = null;
 
-        // Paginate through sales events
-        for (let i = 0; i < 10; i++) { // Max 10 pages
+        // Paginate through sales events in batches or reduce page count if cached
+        for (let i = 0; i < 5; i++) { // Reduced to 5 pages per request for speed, cache helps
             const eventsUrl = new URL(`https://api.opensea.io/api/v2/events/accounts/${SELLER_WALLET}`);
             eventsUrl.searchParams.set('event_type', 'sale');
             eventsUrl.searchParams.set('limit', '50');
@@ -70,7 +70,8 @@ export async function GET() {
                 headers: {
                     'accept': 'application/json',
                     'x-api-key': OPENSEA_API_KEY
-                }
+                },
+                next: { revalidate: 60 } // Cache sales for 60 seconds
             });
 
             if (!response.ok) {
@@ -91,7 +92,7 @@ export async function GET() {
             cursor = data.next;
             if (!cursor) break;
 
-            await delay(300);
+            await delay(100); // Reduced delay
         }
 
         if (allSales.length === 0) {
@@ -128,19 +129,28 @@ export async function GET() {
             })
             .slice(0, 20); // Top 20 buyers
 
-        // Resolve usernames for top buyers
+        // Resolve usernames for top buyers in PARALLEL batches
         const buyersWithNames: BuyerStats[] = [];
-        for (const buyer of sortedBuyers) {
-            const username = await resolveUsername(buyer.address);
-            const totalSpentEth = Number(buyer.totalWei) / 1e18;
+        const BATCH_SIZE = 5;
 
-            buyersWithNames.push({
-                address: buyer.address,
-                username,
-                display: username || formatAddress(buyer.address),
-                purchaseCount: buyer.count,
-                totalSpentEth
-            });
+        for (let i = 0; i < sortedBuyers.length; i += BATCH_SIZE) {
+            const batch = sortedBuyers.slice(i, i + BATCH_SIZE);
+            const resolvedBatch = await Promise.all(batch.map(async (buyer) => {
+                const username = await resolveUsername(buyer.address);
+                const totalSpentEth = Number(buyer.totalWei) / 1e18;
+                return {
+                    address: buyer.address,
+                    username,
+                    display: username || formatAddress(buyer.address),
+                    purchaseCount: buyer.count,
+                    totalSpentEth
+                };
+            }));
+
+            buyersWithNames.push(...resolvedBatch);
+
+            // Minimal delay between batches
+            if (i + BATCH_SIZE < sortedBuyers.length) await delay(50);
         }
 
         return NextResponse.json({
