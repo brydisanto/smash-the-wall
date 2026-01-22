@@ -26,7 +26,7 @@ export async function GET() {
         let cursor: string | null = null;
 
         // Paginate through all listings
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 15; i++) {
             const listingsUrl = new URL(`https://api.opensea.io/api/v2/listings/collection/${GVC_COLLECTION}/all`);
             listingsUrl.searchParams.set('limit', '100');
             if (cursor) {
@@ -95,7 +95,7 @@ export async function GET() {
         }
 
         // Step 3: Fetch actual NFT images from OpenSea in PARALLEL batches
-        const tokenIds = Array.from(nftMap.keys()).slice(0, 100);
+        const tokenIds = Array.from(nftMap.keys());
         const BATCH_SIZE = 5;
 
         for (let i = 0; i < tokenIds.length; i += BATCH_SIZE) {
