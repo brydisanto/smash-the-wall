@@ -32,13 +32,14 @@ const erc20Abi = [
     },
 ] as const;
 
-const client = createPublicClient({
-    chain: mainnet,
-    transport: http('https://eth.llamarpc.com'),
-});
-
 export async function GET() {
     try {
+        // Create fresh client for each request to avoid any caching
+        const client = createPublicClient({
+            chain: mainnet,
+            transport: http('https://eth.llamarpc.com'),
+        });
+
         // Fetch all data in parallel
         const [burnedRaw, totalSupplyRaw, decimals] = await Promise.all([
             client.readContract({
