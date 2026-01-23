@@ -83,12 +83,22 @@ export default function NFTGrid({ nfts, isLoading }: NFTGridProps) {
                             )}
 
                             {/* NFT Image */}
-                            <div className="aspect-square relative">
+                            <div className="aspect-square relative bg-gradient-to-br from-gvc-gold/20 to-orange-900/20">
                                 <img
                                     src={nft.image}
                                     alt={nft.name}
                                     className="w-full h-full object-cover"
                                     loading="lazy"
+                                    onError={(e) => {
+                                        // Replace broken image with placeholder
+                                        const target = e.currentTarget;
+                                        target.style.display = 'none';
+                                        target.parentElement?.classList.add('flex', 'items-center', 'justify-center');
+                                        const placeholder = document.createElement('span');
+                                        placeholder.className = 'text-gvc-gold/50 font-cooper text-2xl';
+                                        placeholder.textContent = 'GVC';
+                                        target.parentElement?.appendChild(placeholder);
+                                    }}
                                 />
                                 {/* Hover overlay */}
                                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
