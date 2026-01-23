@@ -34,7 +34,7 @@ const erc20Abi = [
 
 const client = createPublicClient({
     chain: mainnet,
-    transport: http('https://eth.llamarpc.com'),
+    transport: http('https://rpc.ankr.com/eth'),
 });
 
 export async function GET() {
