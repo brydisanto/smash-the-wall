@@ -193,7 +193,7 @@ export default function StatsPanel({ nftCount, isLoadingNfts, nfts }: StatsProps
                         <Flame className="w-4 h-4 text-orange-500" />
                         <span className="text-white/60 font-mundial text-xs uppercase tracking-wider">$VIBESTR Burned</span>
                     </div>
-                    <div className="text-2xl md:text-3xl font-cooper text-orange-500">
+                    <div className="text-2xl md:text-3xl font-cooper text-orange-500 tracking-wide">
                         {isLoadingBurn ? (
                             <span className="animate-pulse">...</span>
                         ) : burnStats ? (
