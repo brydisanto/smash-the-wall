@@ -13,7 +13,7 @@ export async function GET() {
         let allListings: any[] = [];
         let cursor: string | null = null;
 
-        for (let i = 0; i < 10; i++) { // Max 10 pages
+        for (let i = 0; i < 50; i++) { // Increase to 50 pages to scan deeper
             const listingsUrl = new URL(`https://api.opensea.io/api/v2/listings/collection/${GVC_COLLECTION}/all`);
             listingsUrl.searchParams.set('limit', '100');
             if (cursor) {
