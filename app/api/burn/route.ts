@@ -34,7 +34,7 @@ const erc20Abi = [
 
 const client = createPublicClient({
     chain: mainnet,
-    transport: http('https://eth.llamarpc.com'),
+    transport: http('https://cloudflare-eth.com'),
 });
 
 export async function GET() {
@@ -63,12 +63,20 @@ export async function GET() {
         const totalSupply = Number(formatUnits(totalSupplyRaw, decimals));
         const burnPercentage = totalSupply > 0 ? (burned / totalSupply) * 100 : 0;
 
-        return NextResponse.json({
-            burned: burned,
-            totalSupply: totalSupply,
-            burnPercentage: burnPercentage,
-            decimals: decimals,
-        });
+        return NextResponse.json(
+            {
+                burned: burned,
+                totalSupply: totalSupply,
+                burnPercentage: burnPercentage,
+                decimals: decimals,
+            },
+            {
+                headers: {
+                    'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+                    'Pragma': 'no-cache',
+                },
+            }
+        );
 
     } catch (error) {
         console.error('Error fetching burn data:', error);
