@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Flame } from 'lucide-react';
 
 interface Buyer {
     address: string;
@@ -10,7 +10,15 @@ interface Buyer {
     display: string;
     purchaseCount: number;
     totalSpentEth: number;
+    vibestrBurned?: number;
 }
+
+// Helper for formatting large numbers
+const formatNumber = (num: number) => {
+    if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + 'M';
+    if (num >= 1_000) return (num / 1_000).toFixed(1) + 'K';
+    return num.toLocaleString();
+};
 
 export default function Leaderboard() {
     const [buyers, setBuyers] = useState<Buyer[]>([]);
@@ -132,6 +140,12 @@ export default function Leaderboard() {
                             <p className="text-white/50 font-mundial text-sm">
                                 {buyer.totalSpentEth.toFixed(1)} ETH
                             </p>
+                            {buyer.vibestrBurned && (
+                                <p className="text-orange-500 font-mundial text-xs mt-1 flex items-center justify-end gap-1">
+                                    <Flame className="w-3 h-3" />
+                                    ~{formatNumber(buyer.vibestrBurned)} BURNED
+                                </p>
+                            )}
                         </div>
                     </motion.a>
                 ))}

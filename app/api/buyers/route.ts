@@ -11,6 +11,7 @@ interface BuyerStats {
     display: string;
     purchaseCount: number;
     totalSpentEth: number;
+    vibestrBurned: number;
 }
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -138,12 +139,19 @@ export async function GET() {
             const resolvedBatch = await Promise.all(batch.map(async (buyer) => {
                 const username = await resolveUsername(buyer.address);
                 const totalSpentEth = Number(buyer.totalWei) / 1e18;
+
+                // Estimate VIBESTR burned (approximate)
+                const ethPriceUsd = 3300;
+                const vibestrPriceUsd = 0.0106;
+                const vibestrBurned = (totalSpentEth * ethPriceUsd) / vibestrPriceUsd;
+
                 return {
                     address: buyer.address,
                     username,
                     display: username || formatAddress(buyer.address),
                     purchaseCount: buyer.count,
-                    totalSpentEth
+                    totalSpentEth,
+                    vibestrBurned
                 };
             }));
 
