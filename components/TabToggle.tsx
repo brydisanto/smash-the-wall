@@ -13,7 +13,7 @@ export default function TabToggle({ activeTab, onTabChange }: TabToggleProps) {
             <div className="inline-flex bg-gvc-dark/80 border border-gvc-gray rounded-lg p-1">
                 <button
                     onClick={() => onTabChange('targets')}
-                    className={`relative px-6 py-2 rounded-lg font-mundial font-bold text-sm uppercase tracking-wider transition-colors ${activeTab === 'targets'
+                    className={`relative px-8 py-4 rounded-lg font-mundial font-bold text-sm uppercase tracking-wider transition-colors ${activeTab === 'targets'
                         ? 'text-black'
                         : 'text-white/60 hover:text-white'
                         }`}
@@ -29,7 +29,7 @@ export default function TabToggle({ activeTab, onTabChange }: TabToggleProps) {
                 </button>
                 <button
                     onClick={() => onTabChange('buyers')}
-                    className={`relative px-6 py-2 rounded-lg font-mundial font-bold text-sm uppercase tracking-wider transition-colors ${activeTab === 'buyers'
+                    className={`relative px-8 py-4 rounded-lg font-mundial font-bold text-sm uppercase tracking-wider transition-colors ${activeTab === 'buyers'
                         ? 'text-black'
                         : 'text-white/60 hover:text-white'
                         }`}
