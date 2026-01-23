@@ -26,20 +26,33 @@ export async function GET() {
         let cursor: string | null = null;
 
         // Paginate through all listings
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < 30; i++) {
             const listingsUrl = new URL(`https://api.opensea.io/api/v2/listings/collection/${GVC_COLLECTION}/all`);
             listingsUrl.searchParams.set('limit', '100');
             if (cursor) {
                 listingsUrl.searchParams.set('next', cursor);
             }
 
-            const listingsResponse = await fetch(listingsUrl.toString(), {
+            let listingsResponse = await fetch(listingsUrl.toString(), {
                 headers: {
                     'accept': 'application/json',
                     'x-api-key': OPENSEA_API_KEY
                 },
                 next: { revalidate: 60 } // Cache for 60 seconds
             });
+
+            // Handle rate limit (429)
+            if (listingsResponse.status === 429) {
+                console.warn('Rate limit hit on /api/nfts, waiting 2s...');
+                await delay(2000);
+                listingsResponse = await fetch(listingsUrl.toString(), {
+                    headers: {
+                        'accept': 'application/json',
+                        'x-api-key': OPENSEA_API_KEY
+                    },
+                    next: { revalidate: 60 }
+                });
+            }
 
             if (!listingsResponse.ok) {
                 console.error('OpenSea Listings API Error:', listingsResponse.status);
@@ -63,8 +76,8 @@ export async function GET() {
             cursor = listingsData.next;
             if (!cursor) break;
 
-            // Reduced delay for pagination since we cache
-            await delay(100);
+            // Increased delay to avoid rate limits
+            await delay(500);
         }
 
         if (allListings.length === 0) {
