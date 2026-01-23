@@ -141,7 +141,7 @@ export default function Leaderboard() {
                                 {buyer.totalSpentEth.toFixed(1)} ETH DEPLOYED
                             </p>
                             {buyer.vibestrBurned && (
-                                <p className="text-orange-500 font-mundial text-xs mt-1 flex items-center justify-end gap-1">
+                                <p className="text-orange-500 font-mundial text-sm mt-1 flex items-center justify-end gap-1">
                                     <Flame className="w-3 h-3" />
                                     ~{formatNumber(buyer.vibestrBurned)} $VIBESTR BURNED
                                 </p>
