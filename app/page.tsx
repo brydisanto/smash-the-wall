@@ -81,7 +81,7 @@ export default function Home() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.5 }}
-                    className="z-10 max-w-3xl text-center text-white/70 font-mundial text-base md:text-lg mt-6 leading-relaxed flex flex-col gap-1"
+                    className="z-10 max-w-3xl text-center text-white/70 font-mundial text-base md:text-lg mt-6 leading-relaxed flex flex-col gap-3"
                 >
                     <span>There's a movement happening in Vibetown.</span>
                     <span>A thick wall of GVCs was left behind by the $VIBESTR launch. Your mission is to help smash the wall, as one community, and take down all Strategy-listed GVCs at or below 1ETH.</span>
