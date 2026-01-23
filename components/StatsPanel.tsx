@@ -239,8 +239,8 @@ export default function StatsPanel({ nftCount, isLoadingNfts, nfts }: StatsProps
                     {/* Progress Fill with Shimmer */}
                     <motion.div
                         initial={{ width: 0 }}
-                        animate={{ width: `${Math.min(100, Math.max(0, ((650 - (nfts.length || 275)) / 650) * 100))}%` }}
-                        transition={{ duration: 1, delay: 1 }}
+                        animate={{ width: isLoadingNfts ? "0%" : `${Math.min(100, Math.max(0, ((650 - nfts.length) / 650) * 100))}%` }}
+                        transition={{ duration: 1, delay: 0.2 }}
                         className="absolute left-0 top-0 h-full rounded-l-xl animate-shimmer"
                         style={{
                             background: 'linear-gradient(90deg, #b45309, #eab308, #fbbf24)',
@@ -257,7 +257,11 @@ export default function StatsPanel({ nftCount, isLoadingNfts, nfts }: StatsProps
 
                     {/* Label - Centered & On Top */}
                     <span className="absolute inset-0 flex items-center justify-center z-20 text-white font-cooper text-sm sm:text-lg md:text-2xl tracking-wide drop-shadow-[0_0_20px_rgba(234,179,8,0.8)]">
-                        {Math.round(((650 - (nfts.length || 275)) / 650) * 100)}% OF THE WAY TO VIBEHALLA
+                        {isLoadingNfts ? (
+                            <span className="animate-pulse">Loading...</span>
+                        ) : (
+                            `${Math.round(((650 - nfts.length) / 650) * 100)}% OF THE WAY TO VIBEHALLA`
+                        )}
                     </span>
                 </div>
             </motion.div>
