@@ -11,6 +11,7 @@ interface Sale {
     tokenId: string;
     priceEth: number;
     timestamp: number;
+    imageUrl: string | null;
 }
 
 function formatAddress(address: string): string {
@@ -50,18 +51,20 @@ export async function GET() {
             const priceWei = BigInt(event.payment?.quantity || '0');
             const priceEth = Number(priceWei) / 1e18;
 
-            // Extract token ID from the NFT info
+            // Extract token ID and image from the NFT info
             const tokenId = event.nft?.identifier || 'Unknown';
+            const imageUrl = event.nft?.image_url || event.nft?.display_image_url || null;
 
             // Get timestamp
             const timestamp = event.event_timestamp ? new Date(event.event_timestamp).getTime() : Date.now();
 
             sales.push({
                 buyer: buyerAddress,
-                buyerName: formatAddress(buyerAddress), // Use formatted address as fallback
+                buyerName: formatAddress(buyerAddress),
                 tokenId,
                 priceEth,
-                timestamp
+                timestamp,
+                imageUrl
             });
         }
 

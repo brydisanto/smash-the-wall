@@ -9,6 +9,7 @@ interface Sale {
     tokenId: string;
     priceEth: number;
     timestamp: number;
+    imageUrl: string | null;
 }
 
 export default function SalesWatcher() {
@@ -40,7 +41,8 @@ export default function SalesWatcher() {
                     showSaleToast({
                         buyerName: sale.buyerName,
                         nftId: sale.tokenId,
-                        priceEth: sale.priceEth
+                        priceEth: sale.priceEth,
+                        imageUrl: sale.imageUrl
                     });
                 }
 

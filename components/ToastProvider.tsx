@@ -2,13 +2,15 @@
 
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Flame, X } from 'lucide-react';
+import { X } from 'lucide-react';
+import Image from 'next/image';
 
 interface SaleToast {
     id: string;
     buyerName: string;
     nftId: string;
     priceEth: number;
+    imageUrl: string | null;
 }
 
 interface ToastContextType {
@@ -57,9 +59,21 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                             className="pointer-events-auto bg-gradient-to-r from-orange-900/90 to-amber-900/90 border-2 border-gvc-gold rounded-xl p-4 shadow-2xl shadow-orange-500/20 backdrop-blur-sm min-w-[320px]"
                         >
                             <div className="flex items-start gap-3">
-                                {/* Icon */}
-                                <div className="bg-gvc-gold/20 rounded-full p-2">
-                                    <Flame className="w-5 h-5 text-gvc-gold animate-pulse" />
+                                {/* NFT Image */}
+                                <div className="w-14 h-14 rounded-lg overflow-hidden border-2 border-gvc-gold/50 flex-shrink-0">
+                                    {toast.imageUrl ? (
+                                        <Image
+                                            src={toast.imageUrl}
+                                            alt={`GVC #${toast.nftId}`}
+                                            width={56}
+                                            height={56}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full bg-gvc-gold/20 flex items-center justify-center">
+                                            <span className="text-gvc-gold font-cooper text-xs">GVC</span>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Content */}
