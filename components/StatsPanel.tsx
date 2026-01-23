@@ -33,7 +33,7 @@ export default function StatsPanel({ nftCount, isLoadingNfts, nfts }: StatsProps
     useEffect(() => {
         const fetchBurnStats = async () => {
             try {
-                const res = await fetch('/api/burn', { cache: 'no-store' });
+                const res = await fetch(`/api/burn?t=${Date.now()}`, { cache: 'no-store' });
                 const data = await res.json();
                 setBurnStats(data);
             } catch (error) {
