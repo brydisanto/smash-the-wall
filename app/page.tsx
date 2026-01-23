@@ -85,7 +85,7 @@ export default function Home() {
                 >
                     <span>There's a movement happening in Vibetown.</span>
                     <span>A thick wall of GVCs was left behind by the $VIBESTR launch. Your mission is to help <span className="text-gvc-gold font-bold">smash the wall</span>, as one community, and take down all Strategy-listed GVCs at or below 1ETH.</span>
-                    <span>This unlocks the next phase of GVC's growth.</span>
+                    <span>This unlocks price discovery and the next phase of GVC's growth.</span>
                     <span>More to come on that soon...</span>
                 </motion.div>
 
