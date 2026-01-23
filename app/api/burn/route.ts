@@ -34,7 +34,7 @@ const erc20Abi = [
 
 const client = createPublicClient({
     chain: mainnet,
-    transport: http('https://cloudflare-eth.com'),
+    transport: http('https://eth.llamarpc.com'),
 });
 
 export async function GET() {
