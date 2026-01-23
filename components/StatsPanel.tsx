@@ -257,7 +257,7 @@ export default function StatsPanel({ nftCount, isLoadingNfts, nfts }: StatsProps
 
                     {/* Label - Centered & On Top */}
                     <span className="absolute inset-0 flex items-center justify-center z-20 text-white font-cooper text-xl md:text-2xl tracking-wide drop-shadow-[0_0_20px_rgba(234,179,8,0.8)]">
-                        {Math.round(((650 - (nfts.length || 275)) / 650) * 100)}% OF THE WAY TO VIBEHALLA!
+                        {Math.round(((650 - (nfts.length || 275)) / 650) * 100)}% OF THE WAY TO VIBEHALLA
                     </span>
                 </div>
             </motion.div>
