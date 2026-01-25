@@ -37,7 +37,7 @@ export async function GET() {
         // Create fresh client for each request to avoid any caching
         const client = createPublicClient({
             chain: mainnet,
-            transport: http('https://eth.llamarpc.com'),
+            transport: http('https://ethereum-rpc.publicnode.com'),
         });
 
         // Fetch all data in parallel
