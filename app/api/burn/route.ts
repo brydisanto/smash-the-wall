@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0; // Force no caching
 import { createPublicClient, http, formatUnits } from 'viem';
 import { mainnet } from 'viem/chains';
 
