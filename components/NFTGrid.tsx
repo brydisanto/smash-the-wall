@@ -58,7 +58,7 @@ export default function NFTGrid({ nfts, isLoading }: NFTGridProps) {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {nfts.map((nft, index) => {
-                    const isRonnysPick = ['4945', '812', '785', '6185', '6245', '6634', '3661', '2033', '3833', '1589', '2377', '371', '4446', '1363', '936', '1348', '1667', '5583', '2769', '3600', '4161', '151'].includes(nft.id);
+                    const isRonnysPick = ['4945', '812', '785', '6185', '6245', '6634', '3661', '2033', '3833', '1589', '2377', '371', '4446', '936', '1348', '1667', '5583', '2769', '3600', '4161', '151', '1242', '6302', '3919', '1114', '1059'].includes(nft.id);
                     return (
                         <motion.a
                             key={nft.id}
