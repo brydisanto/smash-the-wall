@@ -124,7 +124,14 @@ export default function StatsPanel({ nftCount, isLoadingNfts, nfts }: StatsProps
                 className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full mt-8"
             >
                 {/* Total GVCs */}
-                <div className="bg-gvc-dark/80 border border-gvc-gray rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+                <motion.div
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ delay: 0.7, duration: 0.4, type: "spring", stiffness: 100 }}
+                    className="bg-gvc-dark/80 border border-gvc-gray rounded-2xl p-4 md:p-6 backdrop-blur-sm relative overflow-hidden"
+                >
+                    {/* Noise texture overlay */}
+                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none rounded-2xl" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")" }} />
                     <div className="flex items-center gap-2 mb-2">
                         <Target className="w-4 h-4 text-white/60" />
                         <span className="text-white/60 font-mundial text-xs uppercase tracking-wider">Total GVCs</span>
@@ -141,10 +148,17 @@ export default function StatsPanel({ nftCount, isLoadingNfts, nfts }: StatsProps
                             </span>
                         )}
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Floor Price */}
-                <div className="bg-gvc-dark/80 border border-gvc-gray rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+                <motion.div
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ delay: 0.8, duration: 0.4, type: "spring", stiffness: 100 }}
+                    className="bg-gvc-dark/80 border border-gvc-gray rounded-2xl p-4 md:p-6 backdrop-blur-sm relative overflow-hidden"
+                >
+                    {/* Noise texture overlay */}
+                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none rounded-2xl" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")" }} />
                     <div className="flex items-center gap-2 mb-2">
                         <Target className="w-4 h-4 text-white/60" />
                         <span className="text-white/60 font-mundial text-xs uppercase tracking-wider">Floor Price</span>
@@ -161,10 +175,17 @@ export default function StatsPanel({ nftCount, isLoadingNfts, nfts }: StatsProps
                             </span>
                         )}
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Strategy GVCs */}
-                <div className="bg-gvc-dark/80 border border-gvc-gold/50 rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+                <motion.div
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ delay: 0.9, duration: 0.4, type: "spring", stiffness: 100 }}
+                    className="bg-gvc-dark/80 border border-gvc-gold/50 rounded-2xl p-4 md:p-6 backdrop-blur-sm relative overflow-hidden"
+                >
+                    {/* Noise texture overlay */}
+                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none rounded-2xl" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")" }} />
                     <div className="flex items-center gap-2 mb-2">
                         <Target className="w-4 h-4 text-gvc-gold" />
                         <span className="text-white/60 font-mundial text-xs uppercase tracking-wider">Strategy GVCs</span>
@@ -185,10 +206,17 @@ export default function StatsPanel({ nftCount, isLoadingNfts, nfts }: StatsProps
                             </span>
                         )}
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Burn Stats */}
-                <div className="bg-gvc-dark/80 border border-orange-500/50 rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+                <motion.div
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ delay: 1.0, duration: 0.4, type: "spring", stiffness: 100 }}
+                    className="bg-gvc-dark/80 border border-orange-500/50 rounded-2xl p-4 md:p-6 backdrop-blur-sm relative overflow-hidden"
+                >
+                    {/* Noise texture overlay */}
+                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none rounded-2xl" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")" }} />
                     <div className="flex items-center gap-2 mb-2">
                         <Flame className="w-4 h-4 text-orange-500" />
                         <span className="text-white/60 font-mundial text-xs uppercase tracking-wider">$VIBESTR Burned</span>
@@ -219,7 +247,7 @@ export default function StatsPanel({ nftCount, isLoadingNfts, nfts }: StatsProps
                             </span>
                         )}
                     </div>
-                </div>
+                </motion.div>
             </motion.div>
 
             {/* Progress Bar - Animated Gradient Shimmer */}
