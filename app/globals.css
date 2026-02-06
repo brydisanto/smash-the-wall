@@ -26,6 +26,10 @@ body {
     -moz-osx-font-smoothing: grayscale;
   }
 
+  .glowing-text-orange {
+    text-shadow: 0 0 20px rgba(249, 115, 22, 0.6), 0 0 40px rgba(249, 115, 22, 0.3);
+  }
+
   /* Animated Gradient Shimmer Progress Bar */
   .animate-shimmer {
     animation: shimmer 2s ease-in-out infinite;

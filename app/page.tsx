@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import StatsPanel from '@/components/StatsPanel';
 import NFTGrid from '@/components/NFTGrid';
-import TabToggle from '@/components/TabToggle';
 import Leaderboard from '@/components/Leaderboard';
 import FlameBackground from '@/components/FlameBackground';
 import { ToastProvider } from '@/components/ToastProvider';
 import SalesWatcher from '@/components/SalesWatcher';
+import VibeWheelCalculator from '@/components/VibeWheelCalculator';
 
 interface NFT {
     id: string;
@@ -21,7 +21,7 @@ interface NFT {
 export default function Home() {
     const [nfts, setNfts] = useState<NFT[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<'targets' | 'buyers'>('targets');
+    const [activeTab, setActiveTab] = useState<'targets' | 'buyers' | 'vibewheel'>('targets');
 
     useEffect(() => {
         const fetchNfts = async () => {
@@ -92,8 +92,33 @@ export default function Home() {
                 {/* Stats Panel */}
                 <StatsPanel nftCount={nfts.length} isLoadingNfts={isLoading} nfts={nfts} />
 
-                {/* Tab Toggle */}
-                <TabToggle activeTab={activeTab} onTabChange={setActiveTab} />
+                {/* Tab Toggle - Slider Style */}
+                <div className="flex justify-center my-12 relative z-20 px-4">
+                    <div className="bg-[#121212] border border-white/10 p-1.5 rounded-xl flex items-center overflow-x-auto max-w-full scrollbar-hide shadow-lg">
+                        {[
+                            { id: 'targets', label: 'STRATEGY LISTINGS' },
+                            { id: 'buyers', label: 'LEADERBOARD' },
+                            { id: 'vibewheel', label: 'SWEEP SIMULATOR' }
+                        ].map((tab) => (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id as any)}
+                                className="relative px-4 sm:px-6 py-3 rounded-lg text-xs sm:text-sm font-bold font-mundial tracking-wider uppercase transition-colors whitespace-nowrap flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gvc-gold focus-visible:ring-offset-2 focus-visible:ring-offset-gvc-dark"
+                            >
+                                <span className={`relative z-10 transition-colors duration-200 ${activeTab === tab.id ? 'text-black' : 'text-white/40 hover:text-white/70'}`}>
+                                    {tab.label}
+                                </span>
+                                {activeTab === tab.id && (
+                                    <motion.div
+                                        layoutId="activeTab"
+                                        className="absolute inset-0 bg-gvc-gold rounded-lg shadow-sm"
+                                        transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+                                    />
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </div>
 
                 {/* Content Area */}
                 <AnimatePresence mode="wait">
@@ -108,7 +133,7 @@ export default function Home() {
                         >
                             <NFTGrid nfts={nfts} isLoading={isLoading} />
                         </motion.div>
-                    ) : (
+                    ) : activeTab === 'buyers' ? (
                         <motion.div
                             key="buyers"
                             initial={{ opacity: 0, y: 20 }}
@@ -118,6 +143,17 @@ export default function Home() {
                             className="w-full"
                         >
                             <Leaderboard />
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="vibewheel"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.3 }}
+                            className="w-full"
+                        >
+                            <VibeWheelCalculator />
                         </motion.div>
                     )}
                 </AnimatePresence>

@@ -12,6 +12,7 @@ const config: Config = {
                 gvc: {
                     gold: "#FFE048", // Standard GVC Gold
                     yellow: "#FFE048", // Updated to match gold
+                    orange: "#F97316", // Orange for burn effects
                     black: "#050505",
                     dark: "#121212",
                     gray: "#1F1F1F"
